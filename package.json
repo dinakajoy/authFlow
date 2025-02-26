@@ -1,0 +1,69 @@
+{
+  "name": "AuthFlow",
+  "version": "1.0.0",
+  "description": "AuthFlow – A streamlined authentication and authorization system with robust role-based access control (RBAC), ensuring secure and seamless user management. ",
+  "main": "src/index.js",
+  "scripts": {
+    "develop": "nodemon",
+    "test": "jest",
+    "test-watch": "jest --watch",
+    "test-coverage": "jest --coverage",
+    "build": "tsc -p tsconfig.prod.json",
+    "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/index.js",
+    "check-format": "",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dinakajoy/authFlow.git"
+  },
+  "keywords": [
+    "AuthFlow",
+    "Authentication and Authorization",
+    "RBAC"
+  ],
+  "author": "Odinaka Joy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dinakajoy/authFlow.git/issues"
+  },
+  "homepage": "https://github.com/dinakajoy/authFlow.git#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.5",
+    "config": "^3.3.12",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv-safe": "^9.1.0",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "express-session": "^1.18.1",
+    "express-validator": "^7.2.1",
+    "http-errors": "^2.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "swagger-ui-express": "^5.0.1",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/compression": "^1.7.5",
+    "@types/config": "^3.3.5",
+    "@types/cors": "^2.8.17",
+    "@types/dotenv-safe": "^8.1.6",
+    "@types/express": "^5.0.0",
+    "@types/http-errors": "^2.0.4",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/lodash": "^4.17.14",
+    "@types/swagger-ui-express": "^4.1.7",
+    "eslint": "^9.18.0",
+    "jest": "^29.7.0",
+    "lint-staged": "^15.4.1",
+    "nodemon": "^3.1.9",
+    "prettier": "^3.4.2",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.7.3"
+  }
+}
