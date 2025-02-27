@@ -1,5 +1,5 @@
 {
-  "name": "AuthFlow",
+  "name": "auth-flow",
   "version": "1.0.0",
   "description": "AuthFlow – A streamlined authentication and authorization system with robust role-based access control (RBAC), ensuring secure and seamless user management. ",
   "main": "src/index.js",
