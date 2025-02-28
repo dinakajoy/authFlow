@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { PermissionGroup } from "../constants";
 
 interface Permission {
   name: string;
@@ -78,7 +79,7 @@ const Permission = () => {
       </div>
 
       {showSidebar && (
-        <div className="fixed inset-0 flex justify-end bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex justify-end bg-transparent bg-opacity-90">
           <div className=" items-start w-[50vw] bg-white p-6 shadow-lg h-full">
             <h3 className="text-xl font-bold mb-3">Create Role</h3>
             {error && (
@@ -108,12 +109,20 @@ const Permission = () => {
             </div>
             <div className="text-left my-4">
               <label className="block text-sm font-medium mb-2">Group</label>
-              <input
+              <select
                 value={group}
                 onChange={(e) => setGroup(e.target.value)}
-                placeholder="Enter permissions"
                 className="w-full border p-2 rounded-md mb-2"
-              />
+              >
+                <option value="" disabled>
+                  Select a permission group
+                </option>
+                {Object.entries(PermissionGroup[0]).map(([key, value]) => (
+                  <option key={key} value={key}>
+                    {value}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="flex justify-end space-x-2 mt-4">
               <button

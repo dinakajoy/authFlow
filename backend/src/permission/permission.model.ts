@@ -1,6 +1,6 @@
-import mongoose, { Schema } from "mongoose";
-import { PermissionGroupType } from "../constants";
-import { IPermissionDocument, IPermissionModel } from "./permission.interfaces";
+import mongoose, { Schema } from 'mongoose';
+import { PermissionGroupType } from '../constants';
+import { IPermissionDocument, IPermissionModel } from './permission.interfaces';
 
 const PermissionSchema = new Schema({
   name: { type: String },
@@ -9,6 +9,6 @@ const PermissionSchema = new Schema({
 });
 
 export default mongoose.model<IPermissionDocument, IPermissionModel>(
-  "Permission",
+  'Permission',
   PermissionSchema
 );

@@ -1,11 +1,5 @@
 import { Types, HydratedDocument, Model } from 'mongoose';
 import { ITimestamp } from '../interfaces';
-import { IUserRoles, UserStatuses } from '../constants';
-
-export interface IUserProfile {
-  name: string;
-  role: IUserRoles;
-}
 
 export interface IUser extends ITimestamp {
   _id: Types.ObjectId;

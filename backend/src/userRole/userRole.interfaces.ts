@@ -1,8 +1,6 @@
 import { Types, HydratedDocument, Model } from "mongoose";
-import { IUserRoles as UserRoleTypes } from "../constants";
 
 export interface IUserRole {
-  type: UserRoleTypes[];
   label: string;
   description: string;
   permissions: Types.ObjectId[];

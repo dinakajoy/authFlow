@@ -1,6 +1,6 @@
 import { body, validationResult } from 'express-validator';
 import { Request, Response, NextFunction } from 'express';
-import { PermissionGroupType } from 'constants';
+import { PermissionGroupType } from '../constants';
 
 export const createPermissionValidation = [
   body("name")
