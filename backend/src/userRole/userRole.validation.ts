@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { body, validationResult } from 'express-validator';
 import mongoose from "mongoose";
 
-export const createUserRoleValidation = [
+export const createUserRoleValidation = () => [
   body("label")
     .trim()
     .notEmpty()
@@ -16,12 +16,12 @@ export const createUserRoleValidation = [
     .isString()
     .withMessage("Description must be a string"),
 
-  body("permissions")
+  body("permission")
     .optional()
     .isArray()
     .withMessage("Permissions must be an array of IDs")
-    .custom((permissions) => {
-      if (!permissions.every((id) => mongoose.Types.ObjectId.isValid(id))) {
+    .custom((permission) => {
+      if (!permission.every((id) => mongoose.Types.ObjectId.isValid(id))) {
         throw new Error("Invalid permission ID format");
       }
       return true;

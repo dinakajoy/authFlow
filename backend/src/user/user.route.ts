@@ -8,7 +8,7 @@ const router = express.Router();
 router.post(
   '/create',
   rateLimiter,
-  createUserValidation(),
+  createUserValidation,
   validate,
   createUserController
 );

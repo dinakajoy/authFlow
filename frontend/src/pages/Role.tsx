@@ -1,16 +1,13 @@
-import { useState } from "react";
-
-interface Role {
-  label: string;
-  description?: string;
-  permissions: string[];
-}
+import { useEffect, useState } from "react";
+import { IRole, IPermission } from "../interface";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const Role = () => {
-  const [roles, setRoles] = useState<Role[]>([]);
+  const [roles, setRoles] = useState<IRole[]>([]);
+  const [permissions, setPermissions] = useState<IPermission[]>([]);
   const [label, setLabel] = useState("");
   const [description, setDescription] = useState("");
-  const [permissions, setPermissions] = useState<string>("");
+  const [permission, setPermission] = useState<string[]>([]);
   const [showSidebar, setShowSidebar] = useState(false);
   const [error, setError] = useState<string>("");
 
@@ -21,32 +18,43 @@ const Role = () => {
     }
     setError("");
 
-    const newRole: Role = {
+    const newRole: IRole = {
       label,
       description,
-      permissions: permissions
-        .split(",")
-        .map((p) => p.trim())
-        .filter((p) => p !== ""),
+      permission,
     };
 
     try {
-      const response = await fetch("/user-role", {
+      const response = await fetch(`${apiUrl}/user-role`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newRole),
       });
       if (!response.ok) throw new Error("Failed to save role");
 
-      setRoles([...roles, newRole]);
       setLabel("");
       setDescription("");
-      setPermissions("");
+      setPermission([]);
       setShowSidebar(false);
     } catch (err) {
       setError("Error saving role");
     }
   };
+
+  useEffect(() => {
+    const fetchPermissions = async () => {
+      const response = await fetch(`${apiUrl}/permissions`);
+      const permissions = await response.json();
+      setPermissions(permissions.permissions);
+    };
+    const fetchUserRoles = async () => {
+      const response = await fetch(`${apiUrl}/user-role`);
+      const roles = await response.json();
+      setRoles(roles.userRoles);
+    };
+    fetchUserRoles();
+    fetchPermissions();
+  }, [showSidebar]);
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
@@ -60,7 +68,7 @@ const Role = () => {
             Add Role
           </button>
         </div>
-        <table className="w-full border-collapse border border-gray-50">
+        <table className="w-full border-collapse border border-gray-50 text-left">
           <thead>
             <tr className="bg-gray-50">
               <th className="p-2">Label</th>
@@ -71,19 +79,19 @@ const Role = () => {
           </thead>
           <tbody>
             {roles.map((role) => (
-              <tr key={role.id} className="border">
+              <tr key={role._id}>
                 <td className="p-2">{role.label}</td>
                 <td className="p-2">{role.description || "-"}</td>
-                <td className="p-2">{role.permissions.join(", ") || "-"}</td>
+                <td className="p-2">{role.permission.join(", ") || "-"}</td>
                 <td className="p-2">
-                  <div className="flex justify-center items-center gap-4">
+                  {/* <div className="flex justify-center items-center gap-4">
                     <span className="text-blue-600 hover:text-blue-800 transition duration-300 cursor-pointer">
                       <SquarePen />
                     </span>
                     <span className="text-red-600 hover:text-red-800 transition duration-300 cursor-pointer">
                       <Trash2 />
                     </span>
-                  </div>
+                  </div> */}
                 </td>
               </tr>
             ))}
@@ -92,7 +100,7 @@ const Role = () => {
       </div>
 
       {showSidebar && (
-        <div className="fixed inset-0 flex justify-end bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex justify-end">
           <div className=" items-start w-[50vw] bg-white p-6 shadow-lg h-full">
             <h3 className="text-xl font-bold mb-3">Create Role</h3>
             {error && (
@@ -109,6 +117,7 @@ const Role = () => {
                 className="w-full border p-2 rounded-md mb-2"
               />
             </div>
+
             <div className="text-left my-4">
               <label className="block text-sm font-medium mb-2">
                 Description
@@ -120,17 +129,34 @@ const Role = () => {
                 className="w-full border p-2 rounded-md mb-2"
               />
             </div>
+
             <div className="text-left my-4">
               <label className="block text-sm font-medium mb-2">
                 Permissions (comma-separated)
               </label>
-              <input
-                value={permissions}
-                onChange={(e) => setPermissions(e.target.value)}
-                placeholder="Enter permissions"
+              <select
+                multiple
+                value={permission}
+                onChange={(e) => {
+                  const selectedValues = Array.from(
+                    e.target.selectedOptions,
+                    (option) => option.value
+                  );
+                  setPermission(selectedValues);
+                }}
                 className="w-full border p-2 rounded-md mb-2"
-              />
+              >
+                {(permissions ?? []).map((permission, index) => (
+                  <option
+                    key={permission._id || index}
+                    value={permission._id || permission.name}
+                  >
+                    {permission.name}
+                  </option>
+                ))}
+              </select>
             </div>
+
             <div className="flex justify-end space-x-2 mt-4">
               <button
                 onClick={() => setShowSidebar(false)}
@@ -139,7 +165,6 @@ const Role = () => {
                 Cancel
               </button>
               <button
-                // onClick={addRole}
                 onClick={validateAndPostData}
                 className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
               >
